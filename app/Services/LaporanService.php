@@ -22,9 +22,16 @@ class LaporanService
     {
         $data['id_user'] = $user->id_user;
 
-        // Combine tanggal_lapor + waktu_kehilangan into proper datetime format (YYYY-MM-DD HH:MM:SS)
+        // Set tanggal_lapor to current date if not provided
+        if (!isset($data['tanggal_lapor'])) {
+            $data['tanggal_lapor'] = now()->format('Y-m-d');
+        }
+
+        // Combine tanggal_lapor + waktu_kehilangan into proper datetime format
         if (isset($data['tanggal_lapor']) && isset($data['waktu_kehilangan'])) {
             $data['waktu_kehilangan'] = $data['tanggal_lapor'] . ' ' . $data['waktu_kehilangan'] . ':00';
+        } elseif (isset($data['tanggal_lapor'])) {
+            $data['waktu_kehilangan'] = $data['tanggal_lapor'] . ' 00:00:00';
         }
 
         $lap = $this->repo->create($data);

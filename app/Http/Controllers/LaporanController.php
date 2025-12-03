@@ -42,11 +42,19 @@ class LaporanController extends Controller
         return redirect()->route('laporan.saya')->with('success', 'Laporan berhasil dibuat. Nomor: '.$lap->nomor_laporan);
     }
 
-    public function riwayat()
+    public function riwayat(Request $request)
     {
         $user = Auth::user();
-        $laporan = $user->laporan()->with('kategori')->orderByDesc('tanggal_lapor')->paginate(10);
-        return view('laporan.riwayat', compact('laporan'));
+        $query = $user->laporan()->with('kategori');
+        
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+        
+        $laporan = $query->orderByDesc('tanggal_lapor')->paginate(10);
+        $currentStatus = $request->get('status');
+        
+        return view('laporan.riwayat', compact('laporan', 'currentStatus'));
     }
 
     public function show($id)

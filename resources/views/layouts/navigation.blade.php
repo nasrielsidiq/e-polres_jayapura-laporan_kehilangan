@@ -6,7 +6,8 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-                        <span class="text-2xl">📋</span>
+                        {{-- <span class="text-2xl">📋</span> --}}
+                        <img src="{{ asset('logo.png') }}" alt="Logo" class="w-15 h-10">
                         <span class="font-bold text-gray-900 dark:text-white hidden sm:inline">{{ config('app.name', 'Laravel') }}</span>
                     </a>
                 </div>

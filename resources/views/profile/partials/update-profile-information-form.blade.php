@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __(\"Perbarui informasi profil akun dan alamat email Anda.\") }}
+            {{ __("Perbarui informasi profil akun dan alamat email Anda.") }}
         </p>
     </header>
 
@@ -18,9 +18,9 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Nama Lengkap')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-input-label for="nama_lengkap" :value="__('Nama Lengkap')" />
+            <x-text-input id="nama_lengkap" name="nama_lengkap" type="text" class="mt-1 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" :value="old('nama_lengkap', $user->nama_lengkap)" required autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('nama_lengkap')" />
         </div>
 
         <div>
@@ -48,9 +48,9 @@
         </div>
 
         <div>
-            <x-input-label for="nomor_telepon" :value="__('Nomor Telepon')" />
-            <x-text-input id="nomor_telepon" name="nomor_telepon" type="text" class="mt-1 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" :value="old('nomor_telepon', $user->nomor_telepon)" autocomplete="tel" />
-            <x-input-error class="mt-2" :messages="$errors->get('nomor_telepon')" />
+            <x-input-label for="no_hp" :value="__('Nomor Telepon')" />
+            <x-text-input id="no_hp" name="no_hp" type="text" class="mt-1 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" :value="old('no_hp', $user->no_hp)" autocomplete="tel" />
+            <x-input-error class="mt-2" :messages="$errors->get('no_hp')" />
         </div>
 
         <div>

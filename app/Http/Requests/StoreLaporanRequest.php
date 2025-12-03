@@ -19,7 +19,8 @@ class StoreLaporanRequest extends FormRequest
             'nama_barang' => 'required|string|max:255',
             'deskripsi_barang' => 'required|string',
             'lokasi_kehilangan' => 'required|string|max:255',
-            'waktu_kehilangan' => 'nullable|date',
+            'tanggal_lapor' => 'required|date',
+            'waktu_kehilangan' => 'nullable|date_format:H:i',
             'kronologi' => 'nullable|string',
             'lampiran.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120'
         ];
