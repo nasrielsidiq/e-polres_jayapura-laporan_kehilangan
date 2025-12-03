@@ -14,7 +14,7 @@ class UpdateLaporanStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => 'required|in:submitted,verified,processing,done,rejected',
+            'status' => 'required|in:submitted,verified,processing,done,rejected,found',
             'catatan' => 'nullable|string|max:500'
         ];
     }

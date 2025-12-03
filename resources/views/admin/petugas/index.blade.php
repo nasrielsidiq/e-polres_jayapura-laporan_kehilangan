@@ -15,7 +15,7 @@
                         <tr>
                             <th class="px-4 py-3 border text-left">Nama</th>
                             <th class="px-4 py-3 border text-left">Email</th>
-                            <th class="px-4 py-3 border text-left">Role</th>
+                            <th class="px-4 py-3 border text-left">Peran</th>
                             <th class="px-4 py-3 border text-left">Aksi</th>
                         </tr>
                     </thead>

@@ -13,9 +13,25 @@
         <!-- Phone Number -->
         <div>
             <x-input-label for="no_hp" :value="__('Nomor HP')" />
-            <x-text-input id="no_hp" class="block mt-1 w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white" type="text" name="no_hp" :value="old('no_hp')" required autofocus placeholder="08xxxxxxxxxx" />
+            <x-text-input id="no_hp" class="block mt-1 w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white" type="tel" name="no_hp" :value="old('no_hp')" required autofocus placeholder="08xxxxxxxxxx" pattern="[0-9]{10,15}" maxlength="15" />
             <x-input-error :messages="$errors->get('no_hp')" class="mt-2" />
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const phoneInput = document.getElementById('no_hp');
+                if (phoneInput) {
+                    phoneInput.addEventListener('input', function(e) {
+                        this.value = this.value.replace(/[^0-9]/g, '');
+                    });
+                    phoneInput.addEventListener('keypress', function(e) {
+                        if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                            e.preventDefault();
+                        }
+                    });
+                }
+            });
+        </script>
 
         <button type="submit" class="w-full mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-500 transition font-semibold">
             {{ __('Reset Password') }}

@@ -3,5 +3,5 @@ namespace App\Http\Controllers;
 
 class LandingController extends Controller
 {
-    public function index(){ return view('welcome'); }
+    public function index(){ return redirect()->route('login'); }
 }

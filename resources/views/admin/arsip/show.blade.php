@@ -17,14 +17,19 @@
         <div class="mb-6">
             @php
                 $statusClasses = [
-                    'selesai' => 'bg-green-100 text-green-800',
-                    'ditemukan' => 'bg-blue-100 text-blue-800',
-                    'ditutup' => 'bg-gray-100 text-gray-800',
+                    'done' => 'bg-green-100 text-green-800',
+                    'found' => 'bg-blue-100 text-blue-800',
+                    'rejected' => 'bg-red-100 text-red-800',
+                ];
+                $statusLabels = [
+                    'done' => 'Selesai',
+                    'found' => 'Ditemukan',
+                    'rejected' => 'Ditolak'
                 ];
                 $class = $statusClasses[$arsip->status] ?? 'bg-gray-100 text-gray-800';
             @endphp
             <span class="px-4 py-2 rounded-full text-sm font-semibold {{ $class }}">
-                {{ ucfirst($arsip->status) }}
+                {{ $statusLabels[$arsip->status] ?? ucfirst($arsip->status) }}
             </span>
         </div>
 
@@ -37,19 +42,19 @@
                     <dl class="space-y-3 text-sm">
                         <div>
                             <dt class="text-gray-600 font-medium">Nama</dt>
-                            <dd class="text-gray-900">{{ $arsip->pelapor->name ?? 'N/A' }}</dd>
+                            <dd class="text-gray-900">{{ $arsip->user->nama_lengkap ?? 'N/A' }}</dd>
                         </div>
                         <div>
                             <dt class="text-gray-600 font-medium">Email</dt>
-                            <dd class="text-gray-900">{{ $arsip->pelapor->email ?? 'N/A' }}</dd>
+                            <dd class="text-gray-900">{{ $arsip->user->email ?? 'N/A' }}</dd>
                         </div>
                         <div>
                             <dt class="text-gray-600 font-medium">Telepon</dt>
-                            <dd class="text-gray-900">{{ $arsip->pelapor->phone ?? 'N/A' }}</dd>
+                            <dd class="text-gray-900">{{ $arsip->user->no_hp ?? 'N/A' }}</dd>
                         </div>
                         <div>
                             <dt class="text-gray-600 font-medium">Alamat</dt>
-                            <dd class="text-gray-900">{{ $arsip->pelapor->address ?? 'N/A' }}</dd>
+                            <dd class="text-gray-900">{{ $arsip->user->alamat ?? 'N/A' }}</dd>
                         </div>
                     </dl>
                 </div>
@@ -68,11 +73,11 @@
                         </div>
                         <div>
                             <dt class="text-gray-600 font-medium">Kategori Barang</dt>
-                            <dd class="text-gray-900">{{ $arsip->kategori_barang->nama ?? 'N/A' }}</dd>
+                            <dd class="text-gray-900">{{ $arsip->kategori->nama_kategori ?? 'N/A' }}</dd>
                         </div>
                         <div>
                             <dt class="text-gray-600 font-medium">Lokasi Hilang</dt>
-                            <dd class="text-gray-900">{{ $arsip->lokasi ?? 'N/A' }}</dd>
+                            <dd class="text-gray-900">{{ $arsip->lokasi_kehilangan ?? 'N/A' }}</dd>
                         </div>
                     </dl>
                 </div>
@@ -81,14 +86,14 @@
             <!-- Deskripsi -->
             <div class="mt-6 pt-6 border-t border-gray-200">
                 <h4 class="text-base font-semibold text-gray-900 mb-3">Deskripsi Barang</h4>
-                <p class="text-gray-700 text-sm leading-relaxed">{{ $arsip->deskripsi ?? 'Tidak ada deskripsi' }}</p>
+                <p class="text-gray-700 text-sm leading-relaxed">{{ $arsip->deskripsi_barang ?? 'Tidak ada deskripsi' }}</p>
             </div>
         </div>
 
         <!-- Action Buttons -->
         <div class="bg-white shadow rounded-lg p-6 flex gap-3">
             <!-- Restore Button -->
-            <form action="{{ route('admin.arsip.restore', $arsip->id) }}" method="POST" class="inline"
+            <form action="{{ route('admin.arsip.restore', $arsip->id_laporan) }}" method="POST" class="inline"
                 onsubmit="return confirm('Kembalikan laporan ini ke status aktif?');">
                 @csrf @method('PUT')
                 <button type="submit"
@@ -98,7 +103,7 @@
             </form>
 
             <!-- Delete Button -->
-            <form action="{{ route('admin.arsip.destroy', $arsip->id) }}" method="POST" class="inline"
+            <form action="{{ route('admin.arsip.destroy', $arsip->id_laporan) }}" method="POST" class="inline"
                 onsubmit="return confirm('Hapus arsip ini secara permanen? Tindakan ini tidak dapat dibatalkan.');">
                 @csrf @method('DELETE')
                 <button type="submit"

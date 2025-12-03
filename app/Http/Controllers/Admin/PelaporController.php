@@ -43,7 +43,7 @@ class PelaporController extends Controller
 
     public function edit($id)
     {
-        $pelapor = $this->service->repo->findById($id);
+        $pelapor = $this->service->findById($id);
         return view('admin.pelapor.edit', compact('pelapor'));
     }
 

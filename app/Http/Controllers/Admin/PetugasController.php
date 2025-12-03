@@ -43,7 +43,7 @@ class PetugasController extends Controller
 
     public function edit($id)
     {
-        $petugas = $this->service->repo->findById($id);
+        $petugas = $this->service->findById($id);
         return view('admin.petugas.edit', compact('petugas'));
     }
 

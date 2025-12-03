@@ -29,25 +29,41 @@ class KategoriBarangController extends Controller
 
     public function store(KategoriBarangRequest $request)
     {
-        $this->service->store($request->validated());
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan');
+        try {
+            $this->service->store($request->validated());
+            return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Gagal menambahkan kategori']);
+        }
     }
 
     public function edit($id)
     {
-        $kategori = $this->service->repo->findById($id);
-        return view('admin.kategori.edit', compact('kategori'));
+        try {
+            $kategori = $this->service->findById($id);
+            return view('admin.kategori.edit', compact('kategori'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.kategori.index')->withErrors(['error' => 'Kategori tidak ditemukan']);
+        }
     }
 
     public function update(KategoriBarangRequest $request, $id)
     {
-        $this->service->update($id, $request->validated());
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui');
+        try {
+            $this->service->update($id, $request->validated());
+            return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Gagal memperbarui kategori']);
+        }
     }
 
     public function destroy($id)
     {
-        $this->service->delete($id);
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus');
+        try {
+            $this->service->delete($id);
+            return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Gagal menghapus kategori']);
+        }
     }
 }

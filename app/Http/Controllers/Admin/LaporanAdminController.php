@@ -45,6 +45,7 @@ class LaporanAdminController extends Controller
                     if($row->status === 'verified') return '<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">Verified</span>';
                     if($row->status === 'processing') return '<span class="px-2 py-1 text-xs bg-orange-100 text-orange-800 rounded">Processing</span>';
                     if($row->status === 'done') return '<span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded">Done</span>';
+                    if($row->status === 'found') return '<span class="px-2 py-1 text-xs bg-emerald-100 text-emerald-800 rounded">Found</span>';
                     if($row->status === 'rejected') return '<span class="px-2 py-1 text-xs bg-red-100 text-red-800 rounded">Rejected</span>';
                     return '<span class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded">'.ucfirst($row->status).'</span>';
                 })

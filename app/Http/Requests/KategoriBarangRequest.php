@@ -14,8 +14,16 @@ class KategoriBarangRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string',
+            'nama_kategori' => 'required|string|max:255',
+            'deskripsi'     => 'nullable|string',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'nama_kategori' => 'nama kategori',
+            'deskripsi'     => 'deskripsi',
         ];
     }
 }

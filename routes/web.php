@@ -164,7 +164,7 @@ Route::prefix('admin')
     |----------------------------------------------------------------------
     */
     Route::get('/arsip', [ArsipController::class, 'index'])->name('admin.arsip.index');
-    Route::get('/arsip/{id}', [ArsipController::class, 'show'])->name('admin.arsip.detail');
+    Route::get('/arsip/{id}', [ArsipController::class, 'show'])->name('admin.arsip.show');
     Route::put('/arsip/{id}/restore', [ArsipController::class, 'restore'])->name('admin.arsip.restore');
     Route::delete('/arsip/{id}', [ArsipController::class, 'destroy'])->name('admin.arsip.destroy');
 

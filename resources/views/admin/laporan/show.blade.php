@@ -103,6 +103,7 @@
                                 <option value="rejected">Rejected</option>
                             @elseif($lap->status === 'processing')
                                 <option value="done">Done</option>
+                                <option value="found">Found</option>
                                 <option value="rejected">Rejected</option>
                             @endif
                         </select>
@@ -111,7 +112,7 @@
                         <label class="block text-xs text-gray-600 mb-1">Catatan</label>
                         <textarea name="catatan" rows="2" class="w-full px-3 py-2 border rounded text-sm" placeholder="Catatan perubahan status" required></textarea>
                     </div>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700" onclick="return confirm('Update status laporan?')">Update Status</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700" onclick="return confirm('Perbarui status laporan?')">Perbarui Status</button>
                 </form>
             </div>
             @endif

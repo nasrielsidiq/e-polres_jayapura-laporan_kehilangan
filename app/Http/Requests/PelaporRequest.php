@@ -13,12 +13,22 @@ class PelaporRequest extends FormRequest
 
     public function rules()
     {
+        $userId = $this->route('pelapor');
         return [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email,' . $this->id,
-            'password' => $this->isMethod('post') ? 'required|min:6' : 'nullable|min:6',
-            'phone'    => 'nullable|string|max:20',
-            'address'  => 'nullable|string|max:255',
+            'nama_lengkap' => 'required|string|max:255',
+            'email'        => 'nullable|email|unique:users,email,' . $userId . ',id_user',
+            'no_hp'        => 'required|string|max:20|unique:users,no_hp,' . $userId . ',id_user',
+            'password'     => $this->isMethod('post') ? 'required|min:6' : 'nullable|min:6',
+            'alamat'       => 'nullable|string|max:500',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'nama_lengkap' => 'nama lengkap',
+            'no_hp'        => 'nomor HP',
+            'alamat'       => 'alamat',
         ];
     }
 }

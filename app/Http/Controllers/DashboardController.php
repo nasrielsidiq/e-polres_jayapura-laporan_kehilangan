@@ -12,7 +12,9 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-
+        if($user->hasRole('admin') || $user->hasRole('petugas')){
+            return redirect()->route('admin.dashboard');
+        }
         // Get user's laporan statistics
         $totalLaporan = $user->laporan()->count();
         $menunggu = $user->laporan()->where('status', 'pending')->count();

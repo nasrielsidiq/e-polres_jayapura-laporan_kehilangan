@@ -46,14 +46,14 @@ class LaporanController extends Controller
     {
         $user = Auth::user();
         $query = $user->laporan()->with('kategori');
-        
+
         if ($request->has('status') && $request->status) {
             $query->where('status', $request->status);
         }
-        
+
         $laporan = $query->orderByDesc('tanggal_lapor')->paginate(10);
         $currentStatus = $request->get('status');
-        
+
         return view('laporan.riwayat', compact('laporan', 'currentStatus'));
     }
 
@@ -62,7 +62,7 @@ class LaporanController extends Controller
         $lap = $this->repo->findById($id);
         // dd($lap->riwayat()->latest()->get()[0]);
         // Pastikan hanya pemilik atau petugas/admin bisa lihat detail (tapi middleware sudah role:pelapor)
-        if($lap->id_user !== Auth::id() && !Auth::user()->hasAnyRole(['admin','petugas'])){
+        if($lap->id_user !== Auth::id() && !Auth::user()->hasAnyRole(['admin','petugas', 'pelapor'])){
             abort(403);
         }
         return view('laporan.detail', compact('lap'));

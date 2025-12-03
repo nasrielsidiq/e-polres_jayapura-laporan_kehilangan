@@ -18,6 +18,11 @@ class PetugasService
         return $this->repo->getAll();
     }
 
+    public function findById($id)
+    {
+        return $this->repo->findById($id);
+    }
+
     public function store($data)
     {
         return $this->repo->create($data);

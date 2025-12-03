@@ -5,7 +5,7 @@
 @section('content')
 <div class="p-6">
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-xl font-semibold text-gray-800">Manajemen Laporan</h1>
+        <h1 class="text-xl font-semibold text-gray-800">Kelola Laporan</h1>
         <a href="{{ route('admin.laporan.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700">
             Buat Laporan
         </a>

@@ -17,15 +17,15 @@
                     value="{{ request('search') }}" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <select name="status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     <option value="">Semua Status</option>
-                    <option value="selesai" {{ request('status') === 'selesai' ? 'selected' : '' }}>Selesai</option>
-                    <option value="ditemukan" {{ request('status') === 'ditemukan' ? 'selected' : '' }}>Ditemukan</option>
-                    <option value="ditutup" {{ request('status') === 'ditutup' ? 'selected' : '' }}>Ditutup</option>
+                    <option value="done" {{ request('status') === 'done' ? 'selected' : '' }}>Selesai</option>
+                    <option value="found" {{ request('status') === 'found' ? 'selected' : '' }}>Ditemukan</option>
+                    <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Ditolak</option>
                 </select>
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
                     Cari
                 </button>
                 <a href="{{ route('admin.arsip.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">
-                    Reset
+                    Atur Ulang
                 </a>
             </form>
         </div>
@@ -70,27 +70,32 @@
                                 </td>
                                 <td class="px-4 py-3 border">
                                     <div>
-                                        <p class="font-medium text-gray-900">{{ $laporan->pelapor->name ?? 'N/A' }}</p>
-                                        <p class="text-gray-500 text-xs">{{ $laporan->pelapor->email ?? '' }}</p>
+                                        <p class="font-medium text-gray-900">{{ $laporan->user->nama_lengkap ?? 'N/A' }}</p>
+                                        <p class="text-gray-500 text-xs">{{ $laporan->user->email ?? '' }}</p>
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 border">
                                     <div>
-                                        <p class="text-gray-900">{{ $laporan->kategori_barang->nama ?? 'N/A' }}</p>
-                                        <p class="text-gray-500 text-xs truncate">{{ $laporan->deskripsi ?? '' }}</p>
+                                        <p class="text-gray-900">{{ $laporan->kategori->nama_kategori ?? 'N/A' }}</p>
+                                        <p class="text-gray-500 text-xs truncate">{{ $laporan->deskripsi_barang ?? '' }}</p>
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 border">
                                     @php
                                         $statusClasses = [
-                                            'selesai' => 'bg-green-100 text-green-800',
-                                            'ditemukan' => 'bg-blue-100 text-blue-800',
-                                            'ditutup' => 'bg-gray-100 text-gray-800',
+                                            'done' => 'bg-green-100 text-green-800',
+                                            'found' => 'bg-blue-100 text-blue-800',
+                                            'rejected' => 'bg-red-100 text-red-800',
                                         ];
                                         $class = $statusClasses[$laporan->status] ?? 'bg-gray-100 text-gray-800';
+                                        $statusLabels = [
+                                            'done' => 'Selesai',
+                                            'found' => 'Ditemukan', 
+                                            'rejected' => 'Ditolak'
+                                        ];
                                     @endphp
                                     <span class="px-3 py-1 rounded-full text-xs font-medium {{ $class }}">
-                                        {{ ucfirst($laporan->status) }}
+                                        {{ $statusLabels[$laporan->status] ?? ucfirst($laporan->status) }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 border text-gray-600 text-xs">
@@ -99,14 +104,14 @@
                                 <td class="px-4 py-3 border text-center">
                                     <div class="flex gap-2 justify-center">
                                         <!-- View Detail -->
-                                        <a href="{{ route('admin.arsip.detail', $laporan->id) }}"
+                                        <a href="{{ route('admin.arsip.show', $laporan->id_laporan) }}"
                                             class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium transition"
                                             title="Lihat Detail">
                                             Lihat
                                         </a>
 
                                         <!-- Restore -->
-                                        <form action="{{ route('admin.arsip.restore', $laporan->id) }}" method="POST" class="inline"
+                                        <form action="{{ route('admin.arsip.restore', $laporan->id_laporan) }}" method="POST" class="inline"
                                             onsubmit="return confirm('Kembalikan laporan ini ke status aktif?');">
                                             @csrf @method('PUT')
                                             <button type="submit"
@@ -117,7 +122,7 @@
                                         </form>
 
                                         <!-- Delete -->
-                                        <form action="{{ route('admin.arsip.destroy', $laporan->id) }}" method="POST" class="inline"
+                                        <form action="{{ route('admin.arsip.destroy', $laporan->id_laporan) }}" method="POST" class="inline"
                                             onsubmit="return confirm('Hapus arsip ini secara permanen? Tindakan ini tidak dapat dibatalkan.');">
                                             @csrf @method('DELETE')
                                             <button type="submit"
@@ -148,24 +153,29 @@
             </div>
         </div>
 
-        <!-- Summary Stats (Optional) -->
+        <!-- Pagination -->
+        <div class="mt-6">
+            {{ $arsip->appends(request()->query())->links() }}
+        </div>
+
+        <!-- Summary Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <div class="bg-green-50 border border-green-200 rounded-lg p-4">
                 <p class="text-green-600 text-xs font-semibold uppercase">Total Selesai</p>
                 <p class="text-2xl font-bold text-green-700 mt-1">
-                    {{ $arsip->where('status', 'selesai')->count() }}
+                    {{ \App\Models\LaporanKehilangan::where('status', 'done')->count() }}
                 </p>
             </div>
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p class="text-blue-600 text-xs font-semibold uppercase">Total Ditemukan</p>
                 <p class="text-2xl font-bold text-blue-700 mt-1">
-                    {{ $arsip->where('status', 'ditemukan')->count() }}
+                    {{ \App\Models\LaporanKehilangan::where('status', 'found')->count() }}
                 </p>
             </div>
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <p class="text-gray-600 text-xs font-semibold uppercase">Total Ditutup</p>
-                <p class="text-2xl font-bold text-gray-700 mt-1">
-                    {{ $arsip->where('status', 'ditutup')->count() }}
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p class="text-red-600 text-xs font-semibold uppercase">Total Ditolak</p>
+                <p class="text-2xl font-bold text-red-700 mt-1">
+                    {{ \App\Models\LaporanKehilangan::where('status', 'rejected')->count() }}
                 </p>
             </div>
         </div>

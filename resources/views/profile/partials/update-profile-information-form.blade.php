@@ -49,7 +49,7 @@
 
         <div>
             <x-input-label for="no_hp" :value="__('Nomor Telepon')" />
-            <x-text-input id="no_hp" name="no_hp" type="text" class="mt-1 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" :value="old('no_hp', $user->no_hp)" autocomplete="tel" />
+            <x-text-input id="no_hp" name="no_hp" type="tel" class="mt-1 block w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white" :value="old('no_hp', $user->no_hp)" autocomplete="tel" pattern="[0-9]{10,15}" maxlength="15" placeholder="08xxxxxxxxxx" />
             <x-input-error class="mt-2" :messages="$errors->get('no_hp')" />
         </div>
 
@@ -75,4 +75,20 @@
             @endif
         </div>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneInput = document.getElementById('no_hp');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+                phoneInput.addEventListener('keypress', function(e) {
+                    if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        });
+    </script>
 </section>

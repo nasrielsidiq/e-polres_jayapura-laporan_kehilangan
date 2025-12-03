@@ -17,7 +17,8 @@ class ArsipController extends Controller
      */
     public function index()
     {
-        $query = LaporanKehilangan::whereIn('status', ['selesai', 'ditemukan', 'ditutup']);
+        $query = LaporanKehilangan::with(['user', 'kategori'])
+            ->whereIn('status', ['done', 'found', 'rejected']);
 
         // Filter berdasarkan status
         if (request('status')) {
@@ -29,14 +30,14 @@ class ArsipController extends Controller
             $search = request('search');
             $query->where(function ($q) use ($search) {
                 $q->where('nomor_laporan', 'like', "%{$search}%")
-                  ->orWhereHas('pelapor', function ($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($q) use ($search) {
+                      $q->where('nama_lengkap', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%");
                   });
             });
         }
 
-        $arsip = $query->latest()->get();
+        $arsip = $query->latest()->paginate(15);
 
         return view('admin.arsip.index', compact('arsip'));
     }
@@ -46,7 +47,8 @@ class ArsipController extends Controller
      */
     public function show($id)
     {
-        $arsip = LaporanKehilangan::whereIn('status', ['selesai', 'ditemukan', 'ditutup'])
+        $arsip = LaporanKehilangan::with(['user', 'kategori'])
+            ->whereIn('status', ['done', 'found', 'rejected'])
             ->findOrFail($id);
 
         return view('admin.arsip.show', compact('arsip'));
@@ -60,7 +62,7 @@ class ArsipController extends Controller
         $laporan = LaporanKehilangan::findOrFail($id);
 
         $laporan->update([
-            'status' => 'diproses'
+            'status' => 'processing'
         ]);
 
         return redirect()->route('admin.arsip.index')

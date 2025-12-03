@@ -36,6 +36,7 @@
                             :value="old('nomor_laporan')"
                             required
                             autofocus
+                            maxlength="20"
                         />
                         <p class="text-gray-500 dark:text-gray-400 mt-3">
                             Format: LP-YYYY-XXXXX (contoh: LP-2024-00001)
