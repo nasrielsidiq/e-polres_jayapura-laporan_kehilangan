@@ -125,7 +125,7 @@
                 <a href="{{ route('status.cek') }}" class="flex-1 px-6 py-3 text-center bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition font-semibold">
                     ← Cari Laporan Lain
                 </a>
-                <a href="{{ route('status.cetak', $lap->nomor_laporan) }}" target="_blank" class="flex-1 px-6 py-3 text-center bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition font-semibold">
+                <a href="{{ route('laporan.cetak', $lap->nomor_laporan) }}" target="_blank" class="flex-1 px-6 py-3 text-center bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition font-semibold">
                     🖨️ Cetak Bukti
                 </a>
             </div>

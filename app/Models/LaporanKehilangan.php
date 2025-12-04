@@ -28,7 +28,12 @@ class LaporanKehilangan extends Model implements HasMedia
         'selesai_at',
     ];
 
-    protected $dates = ['tanggal_lapor','waktu_kehilangan','verified_at','selesai_at'];
+    protected $casts = [
+        'tanggal_lapor' => 'datetime',
+        'waktu_kehilangan' => 'datetime',
+        'verified_at' => 'datetime',
+        'selesai_at' => 'datetime',
+    ];
     /** Pelapor */
     public function user()
     {

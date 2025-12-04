@@ -96,9 +96,10 @@ class LaporanAdminController extends Controller
         return redirect()->route('admin.laporan.detail', $id)->with('success','Status laporan diupdate');
     }
 
-    public function cetakSurat($id)
+    public function cetakSurat($nomor)
     {
-        $lap = $this->repo->findById($id);
+        $lap = $this->repo->findByNomor($nomor);
+        if(!$lap) abort(404);
         $pdf = Pdf::loadView('admin.laporan.surat', compact('lap'));
         return $pdf->stream("surat_{$lap->nomor_laporan}.pdf");
     }

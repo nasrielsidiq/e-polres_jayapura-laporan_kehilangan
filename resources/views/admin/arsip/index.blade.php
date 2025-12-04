@@ -12,10 +12,12 @@
 
         <!-- Filter & Search -->
         <div class="bg-white shadow rounded-lg p-4 mb-6">
-            <form action="{{ route('admin.arsip.index') }}" method="GET" class="flex gap-3">
+            <form action="{{ route('admin.arsip.index') }}" method="GET" class="flex gap-3" id="searchForm">
                 <input type="text" name="search" placeholder="Cari nomor laporan atau pelapor..."
-                    value="{{ request('search') }}" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <select name="status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    value="{{ request('search') }}" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    onkeypress="if(event.key==='Enter') document.getElementById('searchForm').submit()">
+                <select name="status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    onchange="document.getElementById('searchForm').submit()">
                     <option value="">Semua Status</option>
                     <option value="done" {{ request('status') === 'done' ? 'selected' : '' }}>Selesai</option>
                     <option value="found" {{ request('status') === 'found' ? 'selected' : '' }}>Ditemukan</option>

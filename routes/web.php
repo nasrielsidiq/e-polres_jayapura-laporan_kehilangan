@@ -123,7 +123,7 @@ Route::prefix('admin')
             ->name('admin.laporan.update');
 
         // Cetak surat kehilangan
-        Route::get('/{id}/cetak-surat', [LaporanAdminController::class, 'cetakSurat'])
+        Route::get('/{nomor}/cetak-surat', [LaporanAdminController::class, 'cetakSurat'])
             ->name('admin.laporan.cetak');
     });
 

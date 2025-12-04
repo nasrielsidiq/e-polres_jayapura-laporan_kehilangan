@@ -108,7 +108,7 @@
                                         <div>
                                             <span class="font-medium">Tanggal:</span>
                                             <span class="text-gray-600 dark:text-gray-400">
-                                                {{ $item->tanggal_lapor }}
+                                                {{ $item->tanggal_lapor?->format('d M Y') ?? 'N/A' }}
                                             </span>
                                         </div>
                                         <div>
