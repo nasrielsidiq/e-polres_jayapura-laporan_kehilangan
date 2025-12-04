@@ -54,6 +54,7 @@
                 </a>
             </li>
 
+            @if(auth()->user()->hasRole('admin'))
             <li>
                 <a href="{{ route('admin.petugas.index') }}"
                    class="{{ request()->routeIs('admin.petugas.*') ? 'bg-orange-400 text-white font-medium' : 'text-white hover:bg-gray-50 hover:text-gray-900' }} flex items-center gap-3 px-3 py-2 rounded-md">
@@ -63,6 +64,7 @@
                     <span>Kelola Petugas</span>
                 </a>
             </li>
+            @endif
 
             <li>
                 <a href="{{ route('admin.arsip.index') }}"
