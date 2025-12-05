@@ -82,7 +82,7 @@ class LaporanService
     public function updateStatus($id, $petugasId, $status, $catatan = null)
     {
         $lap = $this->repo->updateStatus($id, $status, [
-            'selesai_at' => $status === 'Selesai' ? now() : null,
+            'selesai_at' => $status === 'done' | $status === 'found' ? now() : null,
         ]);
 
         RiwayatProses::create([

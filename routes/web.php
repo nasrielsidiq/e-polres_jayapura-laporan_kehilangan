@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PetugasController;
 use App\Http\Controllers\KontakController;
 use App\Http\Controllers\PanduanController;
+use App\Http\Controllers\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,12 @@ Route::post('/cek-status', [StatusController::class, 'search'])->name('status.se
 // Cetak bukti laporan — public
 Route::get('/laporan/{nomor}/cetak', [StatusController::class, 'cetakBukti'])
     ->name('laporan.cetak');
+
+// Address API routes
+Route::get('/api/provinces', [AddressController::class, 'provinces'])->name('api.provinces');
+Route::get('/api/cities/{provinceCode}', [AddressController::class, 'cities'])->name('api.cities');
+Route::get('/api/districts/{cityCode}', [AddressController::class, 'districts'])->name('api.districts');
+Route::get('/api/villages/{districtCode}', [AddressController::class, 'villages'])->name('api.villages');
 
 /*
 |--------------------------------------------------------------------------
@@ -181,6 +188,19 @@ Route::prefix('admin')
         'update' => 'admin.petugas.update',
         'destroy' => 'admin.petugas.destroy'
     ]);
+
+    /*
+    |----------------------------------------------------------------------
+    | Berita Acara
+    |----------------------------------------------------------------------
+    */
+    Route::prefix('berita-acara')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\BeritaAcaraController::class, 'index'])->name('admin.berita-acara.index');
+        Route::get('/{laporanId}/create', [\App\Http\Controllers\Admin\BeritaAcaraController::class, 'create'])->name('admin.berita-acara.create');
+        Route::post('/{laporanId}', [\App\Http\Controllers\Admin\BeritaAcaraController::class, 'store'])->name('admin.berita-acara.store');
+        Route::get('/{id}/show', [\App\Http\Controllers\Admin\BeritaAcaraController::class, 'show'])->name('admin.berita-acara.show');
+        Route::get('/{id}/print', [\App\Http\Controllers\Admin\BeritaAcaraController::class, 'print'])->name('admin.berita-acara.print');
+    });
 
     /*
     |----------------------------------------------------------------------

@@ -18,6 +18,7 @@
                             <th class="px-4 py-3 border text-left">Nama</th>
                             <th class="px-4 py-3 border text-left">Email</th>
                             <th class="px-4 py-3 border text-left">Telepon</th>
+                            <th class="px-4 py-3 border text-left">Alamat</th>
                             <th class="px-4 py-3 border text-left">Aksi</th>
                         </tr>
                     </thead>
@@ -27,6 +28,7 @@
                                 <td class="px-4 py-3 border">{{ $p->nama_lengkap }}</td>
                                 <td class="px-4 py-3 border">{{ $p->email }}</td>
                                 <td class="px-4 py-3 border">{{ $p->no_hp }}</td>
+                                <td class="px-4 py-3 border text-xs">{{ $p->full_address ?: '-' }}</td>
                                 <td class="px-4 py-3 border space-x-1">
                                     @if (!empty($p->id_user))
                                         <a href="{{ route('admin.pelapor.edit', ['pelapor' => $p->id_user]) }}"
@@ -50,7 +52,7 @@
 
                         @if ($pelapor->isEmpty())
                             <tr>
-                                <td colspan="4" class="text-center text-gray-500 py-4">
+                                <td colspan="5" class="text-center text-gray-500 py-4">
                                     Belum ada data pelapor
                                 </td>
                             </tr>

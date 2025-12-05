@@ -19,6 +19,10 @@ class PelaporRequest extends FormRequest
             'email'        => 'nullable|email|unique:users,email,' . $userId . ',id_user',
             'no_hp'        => 'required|string|max:20|unique:users,no_hp,' . $userId . ',id_user',
             'password'     => $this->isMethod('post') ? 'required|min:6' : 'nullable|min:6',
+            'province_code' => 'nullable|string|exists:indonesia_provinces,code',
+            'city_code' => 'nullable|string|exists:indonesia_cities,code',
+            'district_code' => 'nullable|string|exists:indonesia_districts,code',
+            'village_code' => 'nullable|string|exists:indonesia_villages,code',
             'alamat'       => 'nullable|string|max:500',
         ];
     }

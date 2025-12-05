@@ -27,9 +27,13 @@ class ProfileController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . Auth::id() . ',id_user'],
-            'nomor_telepon' => ['nullable', 'string', 'max:20'],
+            'nama_lengkap' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email,' . Auth::id() . ',id_user'],
+            'no_hp' => ['required', 'string', 'max:20', 'unique:users,no_hp,' . Auth::id() . ',id_user'],
+            'province_code' => ['nullable', 'string', 'exists:indonesia_provinces,code'],
+            'city_code' => ['nullable', 'string', 'exists:indonesia_cities,code'],
+            'district_code' => ['nullable', 'string', 'exists:indonesia_districts,code'],
+            'village_code' => ['nullable', 'string', 'exists:indonesia_villages,code'],
             'alamat' => ['nullable', 'string', 'max:500'],
         ]);
 

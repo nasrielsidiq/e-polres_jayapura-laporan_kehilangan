@@ -28,6 +28,52 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Address Fields -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Province -->
+            <div>
+                <x-input-label for="province_code" :value="__('Provinsi')" />
+                <select id="province_code" name="province_code" class="block mt-1 w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md">
+                    <option value="">Pilih Provinsi</option>
+                </select>
+                <x-input-error :messages="$errors->get('province_code')" class="mt-2" />
+            </div>
+
+            <!-- City -->
+            <div>
+                <x-input-label for="city_code" :value="__('Kabupaten/Kota')" />
+                <select id="city_code" name="city_code" class="block mt-1 w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md" disabled>
+                    <option value="">Pilih Kabupaten/Kota</option>
+                </select>
+                <x-input-error :messages="$errors->get('city_code')" class="mt-2" />
+            </div>
+
+            <!-- District -->
+            <div>
+                <x-input-label for="district_code" :value="__('Kecamatan')" />
+                <select id="district_code" name="district_code" class="block mt-1 w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md" disabled>
+                    <option value="">Pilih Kecamatan</option>
+                </select>
+                <x-input-error :messages="$errors->get('district_code')" class="mt-2" />
+            </div>
+
+            <!-- Village -->
+            <div>
+                <x-input-label for="village_code" :value="__('Desa/Kelurahan')" />
+                <select id="village_code" name="village_code" class="block mt-1 w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md" disabled>
+                    <option value="">Pilih Desa/Kelurahan</option>
+                </select>
+                <x-input-error :messages="$errors->get('village_code')" class="mt-2" />
+            </div>
+        </div>
+
+        <!-- Detailed Address -->
+        <div>
+            <x-input-label for="alamat" :value="__('Alamat Lengkap')" />
+            <textarea id="alamat" name="alamat" rows="3" class="block mt-1 w-full border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md" placeholder="Jalan, RT/RW, No. Rumah, dll.">{{ old('alamat') }}</textarea>
+            <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
+        </div>
+
         <!-- Password -->
         <div>
             <x-input-label for="password" :value="__('Password')" />
@@ -96,8 +142,8 @@
             }
         }
 
-        // Only allow numbers in phone input
         document.addEventListener('DOMContentLoaded', function() {
+            // Phone input validation
             const phoneInput = document.getElementById('no_hp');
             if (phoneInput) {
                 phoneInput.addEventListener('input', function(e) {
@@ -109,6 +155,96 @@
                     }
                 });
             }
+
+            // Address dropdowns
+            const provinceSelect = document.getElementById('province_code');
+            const citySelect = document.getElementById('city_code');
+            const districtSelect = document.getElementById('district_code');
+            const villageSelect = document.getElementById('village_code');
+
+            // Load provinces
+            fetch('/api/provinces')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(province => {
+                        const option = document.createElement('option');
+                        option.value = province.code;
+                        option.textContent = province.name;
+                        provinceSelect.appendChild(option);
+                    });
+                });
+
+            // Province change
+            provinceSelect.addEventListener('change', function() {
+                const provinceCode = this.value;
+                citySelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+                districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+                
+                if (provinceCode) {
+                    citySelect.disabled = false;
+                    fetch(`/api/cities/${provinceCode}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(city => {
+                                const option = document.createElement('option');
+                                option.value = city.code;
+                                option.textContent = city.name;
+                                citySelect.appendChild(option);
+                            });
+                        });
+                } else {
+                    citySelect.disabled = true;
+                    districtSelect.disabled = true;
+                    villageSelect.disabled = true;
+                }
+            });
+
+            // City change
+            citySelect.addEventListener('change', function() {
+                const cityCode = this.value;
+                districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+                
+                if (cityCode) {
+                    districtSelect.disabled = false;
+                    fetch(`/api/districts/${cityCode}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(district => {
+                                const option = document.createElement('option');
+                                option.value = district.code;
+                                option.textContent = district.name;
+                                districtSelect.appendChild(option);
+                            });
+                        });
+                } else {
+                    districtSelect.disabled = true;
+                    villageSelect.disabled = true;
+                }
+            });
+
+            // District change
+            districtSelect.addEventListener('change', function() {
+                const districtCode = this.value;
+                villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+                
+                if (districtCode) {
+                    villageSelect.disabled = false;
+                    fetch(`/api/villages/${districtCode}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(village => {
+                                const option = document.createElement('option');
+                                option.value = village.code;
+                                option.textContent = village.name;
+                                villageSelect.appendChild(option);
+                            });
+                        });
+                } else {
+                    villageSelect.disabled = true;
+                }
+            });
         });
     </script>
 </x-guest-layout>

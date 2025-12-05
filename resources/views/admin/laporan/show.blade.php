@@ -123,6 +123,33 @@
             </div>
             @endif
 
+            <!-- Berita Acara Section -->
+            @if(in_array($lap->status, ['done', 'found']))
+            <div class="border-t pt-4">
+                <h3 class="text-sm font-semibold text-gray-800 mb-3">Berita Acara</h3>
+                @php
+                    $beritaAcara = \App\Models\BeritaAcara::where('id_laporan', $lap->id_laporan)->first();
+                @endphp
+                @if($beritaAcara)
+                    <div class="flex gap-2">
+                        <a href="{{ route('admin.berita-acara.show', $beritaAcara->id) }}" 
+                           class="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
+                            Lihat Berita Acara
+                        </a>
+                        <a href="{{ route('admin.berita-acara.print', $beritaAcara->id) }}" 
+                           class="px-4 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700" target="_blank">
+                            Print PDF
+                        </a>
+                    </div>
+                @else
+                    <a href="{{ route('admin.berita-acara.create', $lap->id_laporan) }}" 
+                       class="px-4 py-2 bg-orange-600 text-white rounded text-sm hover:bg-orange-700">
+                        Buat Berita Acara
+                    </a>
+                @endif
+            </div>
+            @endif
+
             <div class="flex justify-end gap-2 border-t pt-4">
                 <a href="{{ route('admin.laporan.index') }}" class="px-3 py-2 bg-gray-100 rounded text-sm">Kembali</a>
             </div>

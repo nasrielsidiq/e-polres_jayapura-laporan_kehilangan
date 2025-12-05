@@ -53,6 +53,21 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
         order: [[3, 'desc']],
         pageLength: 10,
+        language: {
+            "processing": "Memproses...",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "zeroRecords": "Tidak ada data yang ditemukan",
+            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+            "infoFiltered": "(disaring dari _MAX_ total entri)",
+            "search": "Cari:",
+            "paginate": {
+                "first": "Pertama",
+                "last": "Terakhir",
+                "next": "Selanjutnya",
+                "previous": "Sebelumnya"
+            }
+        }
     });
 });
 </script>

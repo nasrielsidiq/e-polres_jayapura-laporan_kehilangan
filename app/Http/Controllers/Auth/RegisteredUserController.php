@@ -35,6 +35,11 @@ class RegisteredUserController extends Controller
             'no_hp' => ['required', 'string', 'max:20', 'unique:'.User::class],
             'email' => ['nullable', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'province_code' => ['nullable', 'string', 'exists:indonesia_provinces,code'],
+            'city_code' => ['nullable', 'string', 'exists:indonesia_cities,code'],
+            'district_code' => ['nullable', 'string', 'exists:indonesia_districts,code'],
+            'village_code' => ['nullable', 'string', 'exists:indonesia_villages,code'],
+            'alamat' => ['nullable', 'string', 'max:500'],
         ]);
 
         $user = User::create([
@@ -42,6 +47,11 @@ class RegisteredUserController extends Controller
             'no_hp' => $request->no_hp,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'province_code' => $request->province_code,
+            'city_code' => $request->city_code,
+            'district_code' => $request->district_code,
+            'village_code' => $request->village_code,
+            'alamat' => $request->alamat,
         ]);
 
         $user->assignRole('pelapor');

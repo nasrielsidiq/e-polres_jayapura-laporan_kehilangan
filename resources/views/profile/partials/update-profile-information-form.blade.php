@@ -53,9 +53,49 @@
             <x-input-error class="mt-2" :messages="$errors->get('no_hp')" />
         </div>
 
+        <!-- Address Fields -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Province -->
+            <div>
+                <x-input-label for="province_code" :value="__('Provinsi')" />
+                <select id="province_code" name="province_code" class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md">
+                    <option value="">Pilih Provinsi</option>
+                </select>
+                <x-input-error class="mt-2" :messages="$errors->get('province_code')" />
+            </div>
+
+            <!-- City -->
+            <div>
+                <x-input-label for="city_code" :value="__('Kabupaten/Kota')" />
+                <select id="city_code" name="city_code" class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" disabled>
+                    <option value="">Pilih Kabupaten/Kota</option>
+                </select>
+                <x-input-error class="mt-2" :messages="$errors->get('city_code')" />
+            </div>
+
+            <!-- District -->
+            <div>
+                <x-input-label for="district_code" :value="__('Kecamatan')" />
+                <select id="district_code" name="district_code" class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" disabled>
+                    <option value="">Pilih Kecamatan</option>
+                </select>
+                <x-input-error class="mt-2" :messages="$errors->get('district_code')" />
+            </div>
+
+            <!-- Village -->
+            <div>
+                <x-input-label for="village_code" :value="__('Desa/Kelurahan')" />
+                <select id="village_code" name="village_code" class="mt-1 block w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" disabled>
+                    <option value="">Pilih Desa/Kelurahan</option>
+                </select>
+                <x-input-error class="mt-2" :messages="$errors->get('village_code')" />
+            </div>
+        </div>
+
+        <!-- Detailed Address -->
         <div>
-            <x-input-label for="alamat" :value="__('Alamat')" />
-            <textarea id="alamat" name="alamat" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 dark:focus:border-blue-400">{{ old('alamat', $user->alamat) }}</textarea>
+            <x-input-label for="alamat" :value="__('Alamat Lengkap')" />
+            <textarea id="alamat" name="alamat" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-blue-500 dark:focus:border-blue-400" placeholder="Jalan, RT/RW, No. Rumah, dll.">{{ old('alamat', $user->alamat) }}</textarea>
             <x-input-error class="mt-2" :messages="$errors->get('alamat')" />
         </div>
 
@@ -78,6 +118,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Phone input validation
             const phoneInput = document.getElementById('no_hp');
             if (phoneInput) {
                 phoneInput.addEventListener('input', function(e) {
@@ -89,6 +130,108 @@
                     }
                 });
             }
+
+            // Address dropdowns
+            const provinceSelect = document.getElementById('province_code');
+            const citySelect = document.getElementById('city_code');
+            const districtSelect = document.getElementById('district_code');
+            const villageSelect = document.getElementById('village_code');
+
+            const currentProvince = '{{ old("province_code", $user->province_code) }}';
+            const currentCity = '{{ old("city_code", $user->city_code) }}';
+            const currentDistrict = '{{ old("district_code", $user->district_code) }}';
+            const currentVillage = '{{ old("village_code", $user->village_code) }}';
+
+            // Load provinces
+            fetch('/api/provinces')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(province => {
+                        const option = document.createElement('option');
+                        option.value = province.code;
+                        option.textContent = province.name;
+                        if (province.code === currentProvince) option.selected = true;
+                        provinceSelect.appendChild(option);
+                    });
+                    if (currentProvince) provinceSelect.dispatchEvent(new Event('change'));
+                });
+
+            // Province change
+            provinceSelect.addEventListener('change', function() {
+                const provinceCode = this.value;
+                citySelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+                districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+                
+                if (provinceCode) {
+                    citySelect.disabled = false;
+                    fetch(`/api/cities/${provinceCode}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(city => {
+                                const option = document.createElement('option');
+                                option.value = city.code;
+                                option.textContent = city.name;
+                                if (city.code === currentCity) option.selected = true;
+                                citySelect.appendChild(option);
+                            });
+                            if (currentCity) citySelect.dispatchEvent(new Event('change'));
+                        });
+                } else {
+                    citySelect.disabled = true;
+                    districtSelect.disabled = true;
+                    villageSelect.disabled = true;
+                }
+            });
+
+            // City change
+            citySelect.addEventListener('change', function() {
+                const cityCode = this.value;
+                districtSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+                
+                if (cityCode) {
+                    districtSelect.disabled = false;
+                    fetch(`/api/districts/${cityCode}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(district => {
+                                const option = document.createElement('option');
+                                option.value = district.code;
+                                option.textContent = district.name;
+                                if (district.code === currentDistrict) option.selected = true;
+                                districtSelect.appendChild(option);
+                            });
+                            if (currentDistrict) districtSelect.dispatchEvent(new Event('change'));
+                        });
+                } else {
+                    districtSelect.disabled = true;
+                    villageSelect.disabled = true;
+                }
+            });
+
+            // District change
+            districtSelect.addEventListener('change', function() {
+                const districtCode = this.value;
+                villageSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+                
+                if (districtCode) {
+                    villageSelect.disabled = false;
+                    fetch(`/api/villages/${districtCode}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(village => {
+                                const option = document.createElement('option');
+                                option.value = village.code;
+                                option.textContent = village.name;
+                                if (village.code === currentVillage) option.selected = true;
+                                villageSelect.appendChild(option);
+                            });
+                        });
+                } else {
+                    villageSelect.disabled = true;
+                }
+            });
         });
     </script>
 </section>

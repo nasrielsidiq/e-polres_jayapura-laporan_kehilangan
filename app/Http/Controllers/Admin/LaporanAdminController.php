@@ -93,6 +93,13 @@ class LaporanAdminController extends Controller
     {
         $user = Auth::user();
         $this->service->updateStatus($id, $user->id_user, $request->status, $request->catatan);
+        
+        // Auto redirect to berita acara creation if status is done or found
+        if (in_array($request->status, ['done', 'found'])) {
+            return redirect()->route('admin.berita-acara.create', $id)
+                ->with('success', 'Status laporan diupdate. Silakan buat berita acara.');
+        }
+        
         return redirect()->route('admin.laporan.detail', $id)->with('success','Status laporan diupdate');
     }
 
