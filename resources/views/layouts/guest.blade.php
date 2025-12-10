@@ -15,23 +15,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased bg-white dark:bg-slate-900">
-        <!-- Navigation Top -->
-        <nav class="bg-white dark:bg-slate-800 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-16">
-                    <a href="/" class=" flex text-2xl font-bold text-orange-600 dark:text-orange-400">
-                        <img src="logo.png" alt="Logo polrestas papua" class="w-15 h-10"> Laporan Kehilangan
-                    </a>
-                    <div class="flex space-x-4">
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition">Dashboard</a>
-                        @else
-                            <a href="{{ route('login') }}" class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition">Masuk</a>
-                        @endauth
-                    </div>
-                </div>
-            </div>
-        </nav>
+        @include('layouts.navigation')
 
         <!-- Main Content -->
         <div class="min-h-screen flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8">

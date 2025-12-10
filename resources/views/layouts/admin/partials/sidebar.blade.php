@@ -24,15 +24,7 @@
                 </a>
             </li>
 
-            <li>
-                <a href="{{ route('admin.laporan.index') }}"
-                   class="{{ request()->routeIs('admin.laporan.*') ? 'bg-orange-400 text-white font-medium' : 'text-white hover:bg-gray-50 hover:text-gray-900' }} flex items-center gap-3 px-3 py-2 rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m2 0a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v3a2 2 0 002 2h10z" />
-                    </svg>
-                    <span>Kelola Laporan</span>
-                </a>
-            </li>
+
 
             <li>
                 <a href="{{ route('admin.pelapor.index') }}"

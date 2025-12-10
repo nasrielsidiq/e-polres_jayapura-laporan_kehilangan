@@ -15,16 +15,22 @@
         <div class="max-w-4xl mx-auto">
             <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg text-center mb-12">
                 <div class="text-8xl mb-6">
-                    @if($lap->status === 'pending') ⏳
+                    @if($lap->status === 'submitted') ⏳
                     @elseif($lap->status === 'verified') ✅
-                    @elseif($lap->status === 'selesai') 🎉
+                    @elseif($lap->status === 'processing') 🔄
+                    @elseif($lap->status === 'done') 🎉
+                    @elseif($lap->status === 'found') 🎊
+                    @elseif($lap->status === 'rejected') ❌
                     @else 📋
                     @endif
                 </div>
                 <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                    @if($lap->status === 'pending') Menunggu Verifikasi
+                    @if($lap->status === 'submitted') Menunggu Verifikasi
                     @elseif($lap->status === 'verified') Terverifikasi
-                    @elseif($lap->status === 'selesai') Laporan Selesai
+                    @elseif($lap->status === 'processing') Sedang Diproses
+                    @elseif($lap->status === 'done') Laporan Selesai
+                    @elseif($lap->status === 'found') Barang Ditemukan
+                    @elseif($lap->status === 'rejected') Laporan Ditolak
                     @else {{ ucfirst($lap->status) }}
                     @endif
                 </h2>
@@ -50,7 +56,7 @@
                         </div>
                         <div>
                             <p class="font-medium text-gray-600 dark:text-gray-400">Tanggal Lapor</p>
-                            <p class="text-lg text-gray-900 dark:text-white">{{ $lap->tanggal_lapor }}</p>
+                            <p class="text-lg text-gray-900 dark:text-white">{{ $lap->tanggal_lapor->locale('id')->translatedFormat('d F Y') }}</p>
                         </div>
                     </div>
                 </div>
@@ -58,13 +64,13 @@
                 <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg hover:shadow-xl transition">
                     <div class="text-4xl mb-4">📋</div>
                     <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Progress Laporan</h3>
-                
+
                     <div class="space-y-6">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">✓</div>
                             <div class="flex-1">
                                 <p class="text-lg font-semibold text-gray-900 dark:text-white">Laporan Dibuat</p>
-                                <p class="text-gray-600 dark:text-gray-400">{{ $lap->tanggal_lapor }}</p>
+                                <p class="text-gray-600 dark:text-gray-400">{{ $lap->tanggal_lapor->locale('id')->translatedFormat('d F Y') }}</p>
                             </div>
                         </div>
 
@@ -76,7 +82,7 @@
                                 <p class="text-lg font-semibold text-gray-900 dark:text-white">Verifikasi Petugas</p>
                                 <p class="text-gray-600 dark:text-gray-400">
                                     @if($lap->verified_at)
-                                        Diverifikasi pada {{ $lap->verified_at->format('d M Y H:i') }}
+                                        Diverifikasi pada {{ $lap->verified_at->locale('id')->translatedFormat('d F Y H:i') }}
                                     @else
                                         Menunggu verifikasi petugas
                                     @endif
@@ -92,7 +98,7 @@
                                 <p class="text-lg font-semibold text-gray-900 dark:text-white">Laporan Selesai</p>
                                 <p class="text-gray-600 dark:text-gray-400">
                                     @if($lap->selesai_at)
-                                        Diselesaikan pada {{ $lap->selesai_at->format('d M Y H:i') }}
+                                        Diselesaikan pada {{ $lap->selesai_at->locale('id')->translatedFormat('d F Y H:i') }}
                                     @else
                                         Belum selesai
                                     @endif
@@ -113,7 +119,7 @@
                                 <div class="w-3 h-3 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
                                 <div>
                                     <p class="font-semibold text-gray-900 dark:text-white">{{ $item->catatan }}</p>
-                                    <p class="text-gray-600 dark:text-gray-400">{{ $item->waktu }}</p>
+                                    <p class="text-gray-600 dark:text-gray-400">{{ \Carbon\Carbon::parse($item->waktu)->locale('id')->translatedFormat('d F Y H:i') }}</p>
                                 </div>
                             </div>
                         @endforeach

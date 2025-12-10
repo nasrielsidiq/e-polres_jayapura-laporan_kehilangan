@@ -187,20 +187,32 @@
                         <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Status Laporan</p>
                         <span
                             class="inline-block px-4 py-2 text-sm font-semibold rounded-full
-                            @if ($lap->status === 'pending') bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300
+                            @if ($lap->status === 'submitted') bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300
                             @elseif($lap->status === 'verified')
                                 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300
-                            @elseif($lap->status === 'selesai')
+                            @elseif($lap->status === 'processing')
+                                bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300
+                            @elseif($lap->status === 'done')
                                 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300
+                            @elseif($lap->status === 'found')
+                                bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300
+                            @elseif($lap->status === 'rejected')
+                                bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300
                             @else
                                 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 @endif
                         ">
-                            @if ($lap->status === 'pending')
+                            @if ($lap->status === 'submitted')
                                 ⏳ Menunggu Verifikasi
                             @elseif($lap->status === 'verified')
                                 ✓ Terverifikasi
-                            @elseif($lap->status === 'selesai')
-                                ✓ Laporan Selesai
+                            @elseif($lap->status === 'processing')
+                                🔄 Sedang Diproses
+                            @elseif($lap->status === 'done')
+                                ✅ Laporan Selesai
+                            @elseif($lap->status === 'found')
+                                🎉 Barang Ditemukan
+                            @elseif($lap->status === 'rejected')
+                                ❌ Laporan Ditolak
                             @else
                                 {{ ucfirst($lap->status) }}
                             @endif
@@ -360,7 +372,7 @@
                 @endif
 
                 <!-- Upload Lampiran Tambahan -->
-                @if ($lap->status === 'pending' || $lap->status === 'verified')
+                @if ($lap->status === 'submitted' || $lap->status === 'verified')
                     <form method="POST" action="{{ route('laporan.lampiran', $lap->id_laporan) }}"
                         enctype="multipart/form-data"
                         class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 no-print">

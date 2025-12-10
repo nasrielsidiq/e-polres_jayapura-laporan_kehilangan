@@ -41,12 +41,12 @@ class LaporanAdminController extends Controller
                     return $row->tanggal_lapor ? date('d M Y', strtotime($row->tanggal_lapor)) : '-'; 
                 })
                 ->editColumn('status', function($row){
-                    if($row->status === 'submitted') return '<span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded">Submitted</span>';
-                    if($row->status === 'verified') return '<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">Verified</span>';
-                    if($row->status === 'processing') return '<span class="px-2 py-1 text-xs bg-orange-100 text-orange-800 rounded">Processing</span>';
-                    if($row->status === 'done') return '<span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded">Done</span>';
-                    if($row->status === 'found') return '<span class="px-2 py-1 text-xs bg-emerald-100 text-emerald-800 rounded">Found</span>';
-                    if($row->status === 'rejected') return '<span class="px-2 py-1 text-xs bg-red-100 text-red-800 rounded">Rejected</span>';
+                    if($row->status === 'submitted') return '<span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded">Menunggu Verifikasi</span>';
+                    if($row->status === 'verified') return '<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">Terverifikasi</span>';
+                    if($row->status === 'processing') return '<span class="px-2 py-1 text-xs bg-orange-100 text-orange-800 rounded">Sedang Diproses</span>';
+                    if($row->status === 'done') return '<span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded">Selesai</span>';
+                    if($row->status === 'found') return '<span class="px-2 py-1 text-xs bg-emerald-100 text-emerald-800 rounded">Ditemukan</span>';
+                    if($row->status === 'rejected') return '<span class="px-2 py-1 text-xs bg-red-100 text-red-800 rounded">Ditolak</span>';
                     return '<span class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded">'.ucfirst($row->status).'</span>';
                 })
                 ->rawColumns(['aksi', 'status'])

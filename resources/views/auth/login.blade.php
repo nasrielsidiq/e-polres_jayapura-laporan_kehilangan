@@ -53,13 +53,15 @@
         </button>
     </form>
 
-    <div class="mt-6 text-center">
+    <div class="mt-6 text-center space-y-3">
         <p class="text-gray-600 dark:text-gray-400 text-sm">
             Belum punya akun?
             <a href="{{ route('register') }}" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">
                 {{ __('Daftar di sini') }}
             </a>
         </p>
+        
+
     </div>
 
     <script>

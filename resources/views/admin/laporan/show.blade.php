@@ -13,15 +13,17 @@
         <div class="flex items-center gap-2">
             <a href="{{ route('admin.laporan.cetak', $lap->nomor_laporan) }}" target="_blank" class="px-3 py-2 bg-gray-100 rounded text-sm">Cetak</a>
             @if($lap->status === 'submitted')
-                <span class="px-3 py-2 bg-yellow-100 text-yellow-800 rounded text-sm font-medium">Submitted</span>
+                <span class="px-3 py-2 bg-yellow-100 text-yellow-800 rounded text-sm font-medium">Menunggu Verifikasi</span>
             @elseif($lap->status === 'verified')
-                <span class="px-3 py-2 bg-blue-100 text-blue-800 rounded text-sm font-medium">Verified</span>
+                <span class="px-3 py-2 bg-blue-100 text-blue-800 rounded text-sm font-medium">Terverifikasi</span>
             @elseif($lap->status === 'processing')
-                <span class="px-3 py-2 bg-orange-100 text-orange-800 rounded text-sm font-medium">Processing</span>
+                <span class="px-3 py-2 bg-orange-100 text-orange-800 rounded text-sm font-medium">Sedang Diproses</span>
             @elseif($lap->status === 'done')
-                <span class="px-3 py-2 bg-green-100 text-green-800 rounded text-sm font-medium">Done</span>
+                <span class="px-3 py-2 bg-green-100 text-green-800 rounded text-sm font-medium">Selesai</span>
+            @elseif($lap->status === 'found')
+                <span class="px-3 py-2 bg-emerald-100 text-emerald-800 rounded text-sm font-medium">Ditemukan</span>
             @elseif($lap->status === 'rejected')
-                <span class="px-3 py-2 bg-red-100 text-red-800 rounded text-sm font-medium">Rejected</span>
+                <span class="px-3 py-2 bg-red-100 text-red-800 rounded text-sm font-medium">Ditolak</span>
             @endif
         </div>
     </div>
@@ -61,7 +63,16 @@
             <div class="grid grid-cols-3 gap-4">
                 <div>
                     <h3 class="text-xs text-gray-500 uppercase">Status</h3>
-                    <div class="text-sm font-medium text-indigo-600">{{ ucfirst($lap->status) }}</div>
+                    <div class="text-sm font-medium text-indigo-600">
+                        @if($lap->status === 'submitted') Menunggu Verifikasi
+                        @elseif($lap->status === 'verified') Terverifikasi
+                        @elseif($lap->status === 'processing') Sedang Diproses
+                        @elseif($lap->status === 'done') Selesai
+                        @elseif($lap->status === 'found') Ditemukan
+                        @elseif($lap->status === 'rejected') Ditolak
+                        @else {{ ucfirst($lap->status) }}
+                        @endif
+                    </div>
                 </div>
                 <div>
                     <h3 class="text-xs text-gray-500 uppercase">Diverifikasi Oleh</h3>
@@ -99,12 +110,12 @@
                         <select name="status" class="w-full px-3 py-2 border rounded text-sm" required>
                             <option value="">-- Pilih Status --</option>
                             @if($lap->status === 'verified')
-                                <option value="processing">Processing</option>
-                                <option value="rejected">Rejected</option>
+                                <option value="processing">Sedang Diproses</option>
+                                <option value="rejected">Ditolak</option>
                             @elseif($lap->status === 'processing')
-                                <option value="done">Done</option>
-                                <option value="found">Found</option>
-                                <option value="rejected">Rejected</option>
+                                <option value="done">Selesai</option>
+                                <option value="found">Ditemukan</option>
+                                <option value="rejected">Ditolak</option>
                             @endif
                         </select>
                     </div>

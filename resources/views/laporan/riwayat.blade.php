@@ -31,23 +31,23 @@
                 </a>
                 <a href="{{ route('laporan.saya', ['status' => 'submitted']) }}"
                     class="px-6 py-3 rounded-full font-medium {{ $currentStatus === 'submitted' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700' }} transition shadow-md">
-                    Submitted
+                    Menunggu Verifikasi
                 </a>
                 <a href="{{ route('laporan.saya', ['status' => 'verified']) }}"
                     class="px-6 py-3 rounded-full font-medium {{ $currentStatus === 'verified' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700' }} transition shadow-md">
-                    Verified
+                    Terverifikasi
                 </a>
                 <a href="{{ route('laporan.saya', ['status' => 'processing']) }}"
                     class="px-6 py-3 rounded-full font-medium {{ $currentStatus === 'processing' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700' }} transition shadow-md">
-                    Processing
+                    Sedang Diproses
                 </a>
                 <a href="{{ route('laporan.saya', ['status' => 'done']) }}"
                     class="px-6 py-3 rounded-full font-medium {{ $currentStatus === 'done' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700' }} transition shadow-md">
-                    Done
+                    Selesai
                 </a>
                 <a href="{{ route('laporan.saya', ['status' => 'rejected']) }}"
                     class="px-6 py-3 rounded-full font-medium {{ $currentStatus === 'rejected' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-slate-800 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700' }} transition shadow-md">
-                    Rejected
+                    Ditolak
                 </a>
             </div>
             @if ($laporan->count() > 0)
@@ -78,15 +78,17 @@
                                                 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 @endif
                                         ">
                                             @if ($item->status === 'submitted')
-                                                ⏳ Submitted
+                                                ⏳ Menunggu Verifikasi
                                             @elseif($item->status === 'verified')
-                                                ✓ Verified
+                                                ✓ Terverifikasi
                                             @elseif($item->status === 'processing')
-                                                🔄 Processing
+                                                🔄 Sedang Diproses
                                             @elseif($item->status === 'done')
-                                                ✅ Done
+                                                ✅ Selesai
+                                            @elseif($item->status === 'found')
+                                                🎉 Ditemukan
                                             @elseif($item->status === 'rejected')
-                                                ❌ Rejected
+                                                ❌ Ditolak
                                             @else
                                                 {{ ucfirst($item->status) }}
                                             @endif

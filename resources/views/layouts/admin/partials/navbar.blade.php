@@ -11,10 +11,10 @@
                 </a>
 
                 {{-- small nav links --}}
-                <div class="hidden md:flex space-x-4 text-sm text-orange-300">
+                {{-- <div class="hidden md:flex space-x-4 text-sm text-orange-300">
                     <a href="{{ route('admin.dashboard') }}" class="hover:text-orange-200">Dashboard</a>
                     <a href="#" class="hover:text-orange-200">Laporan</a>
-                </div>
+                </div> --}}
             </div>
 
             {{-- RIGHT: User Profile --}}
