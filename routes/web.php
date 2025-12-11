@@ -93,6 +93,10 @@ Route::middleware(['auth', 'verified', 'role:pelapor'])->group(function () {
     // Upload lampiran
     Route::post('/laporan/{id}/lampiran', [LaporanController::class, 'uploadLampiran'])
         ->name('laporan.lampiran');
+
+    // Edit laporan yang ditolak
+    Route::get('/laporan/{id}/edit', [LaporanController::class, 'edit'])->name('laporan.edit');
+    Route::put('/laporan/{id}', [LaporanController::class, 'update'])->name('laporan.update');
 });
 
 

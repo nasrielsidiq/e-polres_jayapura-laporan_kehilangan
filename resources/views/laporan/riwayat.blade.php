@@ -142,12 +142,23 @@
                                         class="px-6 py-3 text-center bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition font-semibold">
                                         Lihat Detail
                                     </a>
-                                    @if ($item->status === 'submitted')
-                                        <button type="button"
-                                            class="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition text-sm font-medium cursor-not-allowed"
-                                            disabled>
-                                            (Tidak bisa diedit)
-                                        </button>
+                                    @if ($item->status === 'rejected')
+                                        <a href="{{ route('laporan.edit', $item->id_laporan) }}"
+                                            class="px-4 py-2 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                                            Edit & Ajukan Ulang
+                                        </a>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 text-center">
+                                            Pengajuan ke-{{ $item->submission_count }}
+                                        </p>
+                                    @elseif ($item->status === 'submitted')
+                                        <p class="px-4 py-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-lg text-sm font-medium text-center">
+                                            Menunggu Verifikasi
+                                        </p>
+                                        @if($item->submission_count > 1)
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 text-center">
+                                                Pengajuan ke-{{ $item->submission_count }}
+                                            </p>
+                                        @endif
                                     @endif
                                 </div>
                             </div>

@@ -26,6 +26,7 @@ class LaporanKehilangan extends Model implements HasMedia
         'verified_by',
         'verified_at',
         'selesai_at',
+        'submission_count',
     ];
 
     protected $casts = [

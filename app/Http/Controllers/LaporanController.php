@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLaporanRequest;
+use App\Http\Requests\UpdateLaporanRequest;
 use App\Services\LaporanService;
 use App\Repositories\LaporanRepository;
 use Illuminate\Http\Request;
@@ -62,7 +63,7 @@ class LaporanController extends Controller
         $lap = $this->repo->findById($id);
         // dd($lap->riwayat()->latest()->get()[0]);
         // Pastikan hanya pemilik atau petugas/admin bisa lihat detail (tapi middleware sudah role:pelapor)
-        if($lap->id_user !== Auth::id() && !Auth::user()->hasAnyRole(['admin','petugas', 'pelapor'])){
+        if($lap->id_user !== Auth::user()->id_user && !Auth::user()->hasAnyRole(['admin','petugas', 'pelapor'])){
             abort(403);
         }
         return view('laporan.detail', compact('lap'));
@@ -71,7 +72,7 @@ class LaporanController extends Controller
     public function uploadLampiran(Request $request, $id)
     {
         $lap = $this->repo->findById($id);
-        if($lap->id_user !== Auth::id()){
+        if($lap->id_user !== Auth::user()->id_user){
             abort(403);
         }
 
@@ -82,5 +83,45 @@ class LaporanController extends Controller
         $this->service->uploadLampiran($lap, $request->file('file'), 'lampiran', $request->user());
 
         return back()->with('success', 'Lampiran berhasil diunggah');
+    }
+
+    public function edit($id)
+    {
+        $lap = $this->repo->findById($id);
+        if($lap->id_user !== Auth::user()->id_user || $lap->status !== 'rejected'){
+            abort(403);
+        }
+        $kategoris = \App\Models\KategoriBarang::all();
+        return view('laporan.edit', compact('lap', 'kategoris'));
+    }
+
+    public function update(UpdateLaporanRequest $request, $id)
+    {
+        $lap = $this->repo->findById($id);
+        if($lap->id_user !== Auth::user()->id_user || $lap->status !== 'rejected'){
+            abort(403);
+        }
+
+        $data = $request->validated();
+        if (isset($data['tanggal_lapor']) && isset($data['waktu_kehilangan'])) {
+            $data['waktu_kehilangan'] = $data['tanggal_lapor'] . ' ' . $data['waktu_kehilangan'] . ':00';
+        }
+        
+        $data['status'] = 'submitted';
+        $data['submission_count'] = $lap->submission_count + 1;
+        $data['verified_by'] = null;
+        $data['verified_at'] = null;
+
+        $lap->update($data);
+
+        \App\Models\RiwayatProses::create([
+            'id_laporan' => $lap->id_laporan,
+            'id_petugas' => null,
+            'status' => 'submitted',
+            'catatan' => 'Laporan diajukan kembali (pengajuan ke-' . $data['submission_count'] . ')',
+            'waktu' => now(),
+        ]);
+
+        return redirect()->route('laporan.saya')->with('success', 'Laporan berhasil diajukan kembali');
     }
 }

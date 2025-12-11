@@ -221,6 +221,9 @@
                     <div class="text-right">
                         <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Nomor Laporan</p>
                         <p class="text-lg font-bold text-gray-900 dark:text-white">{{ $lap->nomor_laporan }}</p>
+                        @if($lap->submission_count > 1)
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Pengajuan ke-{{ $lap->submission_count }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
